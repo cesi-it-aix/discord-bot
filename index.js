@@ -3,6 +3,9 @@ const Commando = require("discord.js-commando");
 const path = require("path");
 const chalk = require("chalk");
 
+const Promo = require("./Promo");
+const PromosData = require("./promos.json");
+
 const CreatePromo = require("./commands/promo/CreatePromo");
 const DeletePromo = require("./commands/promo/DeletePromo");
 const ClearChannel = require("./commands/utils/ClearChannel");
@@ -11,7 +14,15 @@ const client = new Commando.CommandoClient();
 
 console.log("Starting");
 
-client.on("ready", () => console.log(chalk.green("Ready")));
+client.on("ready", () => {
+  console.log(chalk.green("Ready"));
+  client.guilds.forEach(guild => {
+    const promos = PromosData.map(({ name }) => new Promo(guild, name));
+    promos.forEach(promo => {
+      promo.create();
+    });
+  });
+});
 
 client.on("commandRegister", command =>
   console.log(
