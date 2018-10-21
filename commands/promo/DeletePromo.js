@@ -1,4 +1,5 @@
 const { Command } = require("discord.js-commando");
+const Promo = require("../../Promo");
 
 module.exports = class DeletePromo extends Command {
   constructor(client) {
@@ -19,20 +20,15 @@ module.exports = class DeletePromo extends Command {
   }
   async run(msg, { name }) {
     msg.delete();
+    const promo = new Promo(msg.guild, name);
     try {
-      const categoryChannel = msg.guild.channels.find(
-        x => x.name == name && x.type == "category"
-      );
+      const categoryChannel = await promo.getCategory();
       if (categoryChannel) {
-        for (const channel of categoryChannel.children.values()) {
-          await channel.delete();
-        }
-        await categoryChannel.delete();
+        await promo.deleteChannels();
+        await promo.deleteCategory();
       }
-      const role = msg.guild.roles.find(x => x.name == name);
-      if (role) {
-        await role.delete();
-      }
+      const role = promo.getRole();
+      if (role) await role.delete();
     } catch (e) {
       console.error(e);
       return msg.reply("An error occured during the deletion of the promo");

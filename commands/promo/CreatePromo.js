@@ -1,5 +1,5 @@
 const { Command } = require("discord.js-commando");
-const { PERMISSION_ALL, PERMISSION_ACCESS } = require("../../constants");
+const Promo = require("../../Promo");
 
 const TEXT_CHANNEL_NAME = "text";
 const VOICE_CHANNEL_NAME = "vocal";
@@ -23,52 +23,42 @@ module.exports = class CreatePromo extends Command {
   }
   async run(msg, { name }) {
     msg.delete();
+    const promo = new Promo(msg.guild, name);
     let response = "";
     try {
-      let role = msg.guild.roles.find(x => x.name == name);
+      let role = promo.getRole();
       if (role) {
         response += `Role ${name} already exists\n`;
       } else {
-        role = await msg.guild.createRole({ name });
+        role = await promo.createRole();
         response += `Role ${name} created\n`;
       }
 
-      let categoryChannel = msg.guild.channels.find(
-        x => x.name == name && x.type == "category"
-      );
+      let categoryChannel = promo.getCategory();
       let textChannel, vocalChannel;
       if (categoryChannel) {
         response += `Category ${name} already exists\n`;
-        textChannel = categoryChannel.children.find(
-          x => x.name == "text" && x.type == "text"
-        );
-        vocalChannel = categoryChannel.children.find(
-          x => x.name == "vocal" && x.type == "voice"
-        );
+        textChannel = promo.getChannel(TEXT_CHANNEL_NAME, "text");
+        vocalChannel = promo.getChannel(VOICE_CHANNEL_NAME, "voice");
       } else {
-        categoryChannel = await msg.guild.createChannel(name, "category", [
-          { denied: PERMISSION_ALL, id: msg.guild.defaultRole },
-          { allowed: PERMISSION_ACCESS, id: role }
-        ]);
+        categoryChannel = await promo.createCategory();
         response += `Category ${name} created\n`;
       }
 
       if (textChannel) {
         response += `Channel ${TEXT_CHANNEL_NAME} already exists\n`;
       } else {
-        textChannel = await msg.guild.createChannel(TEXT_CHANNEL_NAME, "text");
-        await textChannel.setParent(categoryChannel);
+        textChannel = await promo.createChannel(TEXT_CHANNEL_NAME, "text");
         response += `Channel ${TEXT_CHANNEL_NAME} created\n`;
       }
 
       if (vocalChannel) {
         response += `Channel ${VOICE_CHANNEL_NAME} already exists\n`;
       } else {
-        vocalChannel = await msg.guild.createChannel(
+        vocalChannel = await await promo.createChannel(
           VOICE_CHANNEL_NAME,
           "voice"
         );
-        await vocalChannel.setParent(categoryChannel);
         response += `Channel ${VOICE_CHANNEL_NAME} created\n`;
       }
     } catch (e) {
