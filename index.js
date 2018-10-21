@@ -5,6 +5,7 @@ const chalk = require("chalk");
 
 const CreatePromo = require("./commands/promo/CreatePromo");
 const DeletePromo = require("./commands/promo/DeletePromo");
+const ClearChannel = require("./commands/utils/ClearChannel");
 
 const client = new Commando.CommandoClient();
 
@@ -27,7 +28,7 @@ client.registry
   .registerDefaultGroups()
   .registerGroups([["promo", "Manage promos"]])
   .registerDefaultCommands()
-  .registerCommands([CreatePromo, DeletePromo]);
+  .registerCommands([CreatePromo, DeletePromo, ClearChannel]);
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
 client.login(process.env.TOKEN);

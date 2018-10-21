@@ -1,6 +1,6 @@
 const { Command } = require("discord.js-commando");
 
-module.exports = class CreatePromo extends Command {
+module.exports = class DeletePromo extends Command {
   constructor(client) {
     super(client, {
       name: "promo:delete",
@@ -18,8 +18,8 @@ module.exports = class CreatePromo extends Command {
     });
   }
   async run(msg, { name }) {
+    msg.delete();
     try {
-      msg.delete();
       const categoryChannel = msg.guild.channels.find(
         x => x.name == name && x.type == "category"
       );
@@ -38,6 +38,6 @@ module.exports = class CreatePromo extends Command {
       return msg.reply("An error occured during the deletion of the promo");
     }
 
-    return msg.say(`Promo ${name} deleted`);
+    return msg.say(`Promo ${name} deleted`).then(x => x.delete(10000));
   }
 };
