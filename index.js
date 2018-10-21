@@ -9,6 +9,7 @@ const PromosData = require("./promos.json");
 const CreatePromo = require("./commands/promo/CreatePromo");
 const DeletePromo = require("./commands/promo/DeletePromo");
 const ClearChannel = require("./commands/utils/ClearChannel");
+const Join = require("./commands/Join");
 
 const client = new Commando.CommandoClient();
 
@@ -39,7 +40,7 @@ client.registry
   .registerDefaultGroups()
   .registerGroups([["promo", "Manage promos"]])
   .registerDefaultCommands()
-  .registerCommands([CreatePromo, DeletePromo, ClearChannel]);
+  .registerCommands([CreatePromo, DeletePromo, ClearChannel, Join]);
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
 client.login(process.env.TOKEN);

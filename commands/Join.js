@@ -1,5 +1,6 @@
 const { Command } = require("discord.js-commando");
 const Promo = require("../Promo");
+const { ROLE_MEMBERS } = require("../constants");
 
 module.exports = class Clear extends Command {
   constructor(client) {
@@ -17,18 +18,18 @@ module.exports = class Clear extends Command {
       ]
     });
   }
-  async run(msg, { promo: name }) {
+  async run(msg, { promo }) {
     msg.delete();
-    let messagesDeleted = {};
     try {
-      messagesDeleted = await msg.channel.bulkDelete(number);
+      const memberRole = msg.guild.roles.find(x => x.name == ROLE_MEMBERS);
+      const promoRole = msg.guild.roles.find(x => x.name == promo);
+      if (!promoRole || !memberRole) return msg.reply("Roles are missings");
+      await msg.member.addRoles([memberRole, promoRole]);
     } catch (e) {
       console.error(e);
       return msg.reply("An error occured during the operation");
     }
 
-    return msg
-      .say(`${messagesDeleted.size} messages deleted`)
-      .then(x => x.delete(10000));
+    return msg.say(`Welcome to ${promo}`).then(x => x.delete(10000));
   }
 };
