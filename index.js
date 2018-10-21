@@ -3,7 +3,8 @@ const Commando = require("discord.js-commando");
 const path = require("path");
 const chalk = require("chalk");
 
-const CreatePromo = require("./commands/CreatePromo");
+const CreatePromo = require("./commands/promo/CreatePromo");
+const DeletePromo = require("./commands/promo/DeletePromo");
 
 const client = new Commando.CommandoClient();
 
@@ -24,8 +25,9 @@ client.on("groupRegister", group =>
 client.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
+  .registerGroups([["promo", "Manage promos"]])
   .registerDefaultCommands()
-  .registerCommands([CreatePromo]);
+  .registerCommands([CreatePromo, DeletePromo]);
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
 client.login(process.env.TOKEN);

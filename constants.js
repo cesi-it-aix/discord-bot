@@ -1,0 +1,4 @@
+module.exports = {
+  PERMISSION_ALL: 2146958847,
+  PERMISSION_ACCESS: 37215296
+};
