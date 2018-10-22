@@ -9,6 +9,7 @@ module.exports = class DeletePromo extends Command {
       group: "promo",
       memberName: "delete",
       description: "Delete a promo",
+      userPermissions: ["ADMINISTRATOR"],
       args: [
         {
           key: "name",

@@ -12,6 +12,7 @@ module.exports = class CreatePromo extends Command {
       group: "promo",
       memberName: "create",
       description: "Create a promo",
+      userPermissions: ["ADMINISTRATOR"],
       args: [
         {
           key: "name",
