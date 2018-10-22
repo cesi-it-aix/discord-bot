@@ -2,6 +2,7 @@ const config = require("dotenv").config();
 const Commando = require("discord.js-commando");
 const path = require("path");
 const chalk = require("chalk");
+const http = require("http");
 
 const Promo = require("./Promo");
 const PromosData = require("./promos.json");
@@ -44,3 +45,6 @@ client.registry
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
 client.login(process.env.TOKEN);
+
+const httpServer = http.createServer();
+httpServer.listen(3000);
