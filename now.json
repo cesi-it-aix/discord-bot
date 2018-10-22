@@ -1,5 +1,12 @@
 {
+  "alias": ["cesi-discord-bot"],
   "env": {
     "TOKEN": "@cesi-discord-bot-token"
+  },
+  "scale": {
+    "bru": {
+      "min": 1,
+      "max": 1
+    }
   }
 }
