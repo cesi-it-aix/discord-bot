@@ -1,1 +1,5 @@
-{}
+{
+  "env": {
+    "TOKEN": "@cesi-discord-bot-token"
+  }
+}
