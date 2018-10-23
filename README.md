@@ -8,4 +8,5 @@ Create a .env file
 
 ```
 TOKEN=yourtoken
+PREFIX=yourcustomprefix
 ```

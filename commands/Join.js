@@ -1,6 +1,7 @@
 const { Command } = require("discord.js-commando");
 const Promo = require("../Promo");
 const { ROLE_MEMBERS } = require("../constants");
+const { deleteAfter } = require("../utils");
 
 module.exports = class Clear extends Command {
   constructor(client) {
@@ -9,6 +10,7 @@ module.exports = class Clear extends Command {
       group: "commands",
       memberName: "join",
       description: "Join a promo",
+      guildOnly: true,
       args: [
         {
           key: "promo",
@@ -18,18 +20,28 @@ module.exports = class Clear extends Command {
       ]
     });
   }
+
   async run(msg, { promo }) {
-    msg.delete();
     try {
+      msg.delete();
+
+      const isMember = msg.member.roles.some(x => x.name == ROLE_MEMBERS);
+      if (isMember) return;
+
+      const promoNames = [promo, promo.toUpperCase(), promo.toLowerCase()];
       const memberRole = msg.guild.roles.find(x => x.name == ROLE_MEMBERS);
-      const promoRole = msg.guild.roles.find(x => x.name == promo);
-      if (!promoRole || !memberRole) return msg.reply("Roles are missings");
+      const promoRole = msg.guild.roles.find(x => promoNames.includes(x.name));
+
+      if (!memberRole) return;
+      if (!promoRole)
+        return msg.reply("Promo not found").then(deleteAfter(10000));
+
       await msg.member.addRoles([memberRole, promoRole]);
     } catch (e) {
       console.error(e);
-      return msg.reply("An error occured during the operation");
+      return msg
+        .reply("An error occured during the operation")
+        .then(deleteAfter(10000));
     }
-
-    return msg.say(`Welcome to ${promo}`).then(x => x.delete(10000));
   }
 };

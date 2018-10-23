@@ -12,7 +12,10 @@ const DeletePromo = require("./commands/promo/DeletePromo");
 const ClearChannel = require("./commands/utils/ClearChannel");
 const Join = require("./commands/Join");
 
-const client = new Commando.CommandoClient();
+const client = new Commando.CommandoClient({
+  commandPrefix: process.env.PREFIX || "!",
+  unknownCommandResponse: false
+});
 
 console.log("Starting");
 
