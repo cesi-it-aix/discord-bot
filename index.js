@@ -40,11 +40,11 @@ client.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
   .registerGroups([["promo", "Manage promos"]])
-  .registerDefaultCommands()
+  // .registerDefaultCommands()
   .registerCommands([CreatePromo, DeletePromo, ClearChannel, Join]);
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
 client.login(process.env.TOKEN);
 
-const httpServer = http.createServer();
-httpServer.listen(3000);
+const httpServer = http.createServer((req, res) => res.end("Hello World"));
+httpServer.listen(process.env.PORT || 3000);
