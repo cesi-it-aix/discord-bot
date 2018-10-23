@@ -40,7 +40,12 @@ client.registry
   .registerDefaultTypes()
   .registerDefaultGroups()
   .registerGroups([["promo", "Manage promos"]])
-  // .registerDefaultCommands()
+  .registerDefaultCommands({
+    prefix: false,
+    eval: false,
+    ping: false,
+    commandState: false
+  })
   .registerCommands([CreatePromo, DeletePromo, ClearChannel, Join]);
 // .registerCommandsIn(path.join(__dirname, "commands")) Not Working ?
 
@@ -48,3 +53,6 @@ client.login(process.env.TOKEN);
 
 const httpServer = http.createServer((req, res) => res.end("Hello World"));
 httpServer.listen(process.env.PORT || 3000);
+
+if (process.env.HEROKU_URL)
+  setInterval(() => http.get(process.env.HEROKU_URL), 900000); // every 15 minutes
