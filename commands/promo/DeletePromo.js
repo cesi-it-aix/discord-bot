@@ -10,6 +10,8 @@ module.exports = class DeletePromo extends Command {
       memberName: "delete",
       description: "Delete a promo",
       userPermissions: ["ADMINISTRATOR"],
+      hidden: true,
+      guildOnly: true,
       args: [
         {
           key: "name",

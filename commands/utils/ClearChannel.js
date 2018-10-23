@@ -8,6 +8,8 @@ module.exports = class ClearChannel extends Command {
       memberName: "clear",
       description: "Delete messages from a channel",
       userPermissions: ["ADMINISTRATOR"],
+      hidden: true,
+      guildOnly: true,
       args: [
         {
           key: "number",
